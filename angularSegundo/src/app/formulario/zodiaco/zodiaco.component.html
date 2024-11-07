@@ -1,0 +1,93 @@
+<div class="container mx-auto p-8">
+    <div class="w-full max-w-md mx-auto">
+      <form [formGroup]="formGroup" class="bg-white p-6 border border-gray-200 rounded-lg shadow-sm" (ngSubmit)="onSubmit()">
+        
+        <!-- Nombre -->
+        <div class="mb-4">
+          <label for="nombre" class="block mb-1 text-sm font-medium text-gray-800">Nombre</label>
+          <input type="text" id="nombre" class="w-full p-2 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400"
+          placeholder="Ingrese su nombre" formControlName="nombre" />
+        </div>
+    
+        <!-- Apellido Paterno -->
+        <div class="mb-4">
+          <label for="apaterno" class="block mb-1 text-sm font-medium text-gray-800">Apellido Paterno</label>
+          <input type="text" id="apaterno" class="w-full p-2 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400"
+          placeholder="Ingrese su apellido" formControlName="apaterno" />
+        </div>
+    
+        <!-- Apellido Materno -->
+        <div class="mb-4">
+          <label for="amaterno" class="block mb-1 text-sm font-medium text-gray-800">Apellido Materno</label>
+          <input type="text" id="amaterno" class="w-full p-2 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400"
+          placeholder="Ingrese su apellido" formControlName="amaterno" />
+        </div>
+    
+        <!-- Fecha de Nacimiento -->
+        <div class="mb-4">
+          <h2 class="text-sm font-medium text-gray-800 mb-2">Fecha de nacimiento</h2>
+          
+          <div class="grid grid-cols-3 gap-2">
+            <!-- Día -->
+            <div>
+              <label for="dia" class="block text-sm font-medium text-gray-800">Día</label>
+              <input type="number" max="31" id="dia" class="w-full p-2 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400"
+              placeholder="Día" formControlName="dia" />
+            </div>
+    
+            <!-- Mes -->
+            <div>
+              <label for="mes" class="block text-sm font-medium text-gray-800">Mes</label>
+              <input type="number" min="1" max="12" id="mes" class="w-full p-2 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400"
+              placeholder="Mes" formControlName="mes" />
+            </div>
+    
+            <!-- Año -->
+            <div>
+              <label for="year" class="block text-sm font-medium text-gray-800">Año</label>
+              <input type="number" min="1984" id="year" class="w-full p-2 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400"
+              placeholder="Año" formControlName="year" />
+            </div>
+          </div>
+        </div>
+    
+        <!-- Sexo -->
+        <div class="mb-4">
+          <h2 class="text-sm font-medium text-gray-800 mb-2">Sexo</h2>
+          
+          <!-- Hombre -->
+          <div class="flex items-center mb-2">
+            <input id="hombre" formControlName="sexo" type="radio" name="sexo" value="hombre" class="w-4 h-4 text-gray-600 focus:ring-gray-400" />
+            <label for="hombre" class="ml-2 text-sm text-gray-700">Hombre</label>
+          </div>
+          
+          <!-- Mujer -->
+          <div class="flex items-center">
+            <input id="mujer" formControlName="sexo" type="radio" name="sexo" value="mujer" class="w-4 h-4 text-gray-600 focus:ring-gray-400" />
+            <label for="mujer" class="ml-2 text-sm text-gray-700">Mujer</label>
+          </div>
+        </div>
+    
+        <!-- Botón de enviar -->
+        <button type="submit" class="w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 focus:ring-2 focus:ring-gray-400">
+          Enviar
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="container mx-auto p-8">
+    <div class="w-full p-6 text-center bg-white border border-gray-200 rounded-lg shadow-sm">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Zodiaco Chino</h2>
+      
+      <p class="mb-2 text-gray-700">Hola, <span class="font-bold">{{ nombreCompleto }}</span></p>
+      <p class="mb-2 text-gray-700">Naciste en: <span class="font-bold">{{ clientes.year }}</span></p>
+      <p class="mb-2 text-gray-700">Tienes <span class="font-bold">{{ edad }}</span> años</p>
+      <p class="mb-4 text-gray-700">Tu signo zodiacal chino es: <span class="font-bold text-gray-800 text-2xl">{{ signoZodiacal }}</span></p>
+      
+      <div class="flex justify-center mt-4">
+        <img [src]="imagenSigno" alt="{{ signoZodiacal }}" class="w-32 h-32 rounded-md shadow-md" />
+      </div>
+    </div>
+  </div>
+  

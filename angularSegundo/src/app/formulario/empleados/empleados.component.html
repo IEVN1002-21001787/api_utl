@@ -1,0 +1,111 @@
+<!-- Formulario -->
+<div class="max-w-xl mx-auto bg-white shadow-md rounded-lg p-6">
+
+   
+    <div *ngIf="successMessage" class="p-4 mb-4 text-sm text-blue-700 rounded-lg bg-blue-100" role="alert">
+      <span class="font-medium">¡Registro exitoso!</span> {{ successMessage }}
+    </div>
+  
+    
+    <div *ngIf="errorMessage" class="p-4 mb-4 text-sm text-red-700 rounded-lg bg-red-100" role="alert">
+      <span class="font-medium">Error en el registro:</span> {{ errorMessage }}
+    </div>
+  
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      <!-- Matricula -->
+      <div class="mb-4">
+        <label for="matricula" class="block mb-2 text-sm font-medium text-gray-800">Matricula:</label>
+        <input type="text" id="matricula" class="bg-gray-100 border border-gray-300 text-gray-800 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2" 
+        placeholder="Ingrese su matricula" formControlName="matricula" />
+      </div>
+      <!-- Nombre -->
+      <div class="mb-4">
+        <label for="nombre" class="block mb-2 text-sm font-medium text-gray-800">Nombre:</label>
+        <input type="text" id="nombre" class="bg-gray-100 border border-gray-300 text-gray-800 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2" 
+        placeholder="Ingrese su nombre" formControlName="nombre" />
+      </div>
+      <!-- Correo -->
+      <div class="mb-4">
+        <label for="email" class="block mb-2 text-sm font-medium text-gray-800">Correo:</label>
+        <input type="email" id="email" class="bg-gray-100 border border-gray-300 text-gray-800 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2" 
+        placeholder="Ingrese su correo" formControlName="email" />
+      </div>
+      <!-- Edad -->
+      <div class="mb-4">
+        <label for="edad" class="block mb-2 text-sm font-medium text-gray-800">Edad:</label>
+        <input type="number" id="edad" class="bg-gray-100 border border-gray-300 text-gray-800 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2" 
+        placeholder="Ingrese su edad" formControlName="edad" />
+      </div>
+      <!-- Horas de trabajo -->
+      <div class="mb-4">
+        <label for="horas" class="block mb-2 text-sm font-medium text-gray-800">Horas trabajadas:</label>
+        <input type="number" id="horas" class="bg-gray-100 border border-gray-300 text-gray-800 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2" 
+        placeholder="Ingrese las horas trabajadas" formControlName="horas" />
+      </div>
+      <!-- Enviar -->
+      <button type="submit" class="text-white  dark:bg-gray-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full py-2">
+        Registrar
+    </button>
+    </form>
+</div>
+
+<!-- Tabla y botones -->
+<div class="max-w-xl mx-auto mt-6">
+    <button (click)="mostrarTabla = !mostrarTabla" class="text-white  dark:bg-gray-900 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full py-2 mb-4">
+        Imprimir
+      </button>
+  
+    <div *ngIf="mostrarTabla">
+      <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-600">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+            <tr>
+              <th scope="col" class="px-4 py-3">Matricula</th>
+              <th scope="col" class="px-4 py-3">Nombre</th>
+              <th scope="col" class="px-4 py-3">Correo</th>
+              <th scope="col" class="px-4 py-3">Edad</th>
+              <th scope="col" class="px-4 py-3">Horas trabajadas</th>
+              <th scope="col" class="px-4 py-3">Pago normal</th>
+              <th scope="col" class="px-4 py-3">Pago de horas extra</th>
+              <th scope="col" class="px-4 py-3">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let empleado of empleados">
+              <td class="px-4 py-2">{{ empleado.matricula }}</td>
+              <td class="px-4 py-2">{{ empleado.nombre }}</td>
+              <td class="px-4 py-2">{{ empleado.email }}</td>
+              <td class="px-4 py-2">{{ empleado.edad }}</td>
+              <td class="px-4 py-2">{{ empleado.horas }}</td>
+              <td class="px-4 py-2">{{ empleado.pago }}</td>
+              <td class="px-4 py-2">{{ empleado.extra }}</td>
+              <td class="px-4 py-2">{{ empleado.subtotal }}</td>
+            </tr>
+          </tbody>
+          <tfoot class="bg-gray-100">
+            <tr>
+              <th scope="col" colspan="7" class="px-4 py-3 text-right">Total a pagar:</th>
+              <td class="px-4 py-3">{{ totalPagos }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+  
+      <!-- Botones debajo de la tabla -->
+      <div class="mt-4 flex flex-col space-y-4">
+        <!-- Modificar empleado -->
+        <div class="mb-4">
+            <label for="matriculaModificar" class="block text-sm font-medium text-gray-800">Ingresar matrícula para modificar:</label>
+            <input type="text" id="matriculaModificar" [(ngModel)]="matriculaModificar" class="bg-gray-100 border border-gray-300 text-gray-800 rounded-lg block w-64 p-2" placeholder="Ingrese la matrícula" />
+            <button (click)="buscarEmpleadoPorMatricula()" class="bg-gray-900 text-white px-4 py-2 rounded mt-2 hover:bg-gray-700">Modificar</button>
+        </div>
+  
+        <!-- Eliminar empleado -->
+        <div class="mb-4">
+            <label for="matriculaEliminar" class="block text-sm font-medium text-gray-800">Ingresar matrícula para eliminar:</label>
+            <input type="text" id="matriculaEliminar" [(ngModel)]="matriculaEliminar" class="bg-gray-100 border border-gray-300 text-gray-800 rounded-lg block w-64 p-2" placeholder="Ingrese la matrícula" />
+            <button (click)="eliminarEmpleadoPorMatricula()" class="bg-red-600 text-white px-4 py-2 rounded mt-2 hover:bg-red-700">Eliminar</button>
+        </div>
+      </div>
+    </div>
+</div>
