@@ -3,7 +3,7 @@ import ZodiacoComponent from './zodiaco/zodiaco.component';
 import Ejemplo1Component from "./ejemplo1/ejemplo1.component";
 import EmpleadosComponent from './empleados/empleados.component';
 
-// Si estás exportando el componente con un export por nombre, como es habitual en Angular
+
 export default [
   {
     path: 'zodiaco',

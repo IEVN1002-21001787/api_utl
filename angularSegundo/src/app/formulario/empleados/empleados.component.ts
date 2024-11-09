@@ -25,8 +25,8 @@ export default class EmpleadosComponent implements OnInit {
   formulario!: FormGroup;
   empleados: Empleado[] = [];
   totalPagos: number = 0;
-  errorMessage: string = '';       
-  successMessage: string = '';     
+  errorMessage: string = '';     
+  successMessage: string = '';    
   matriculaModificar: number | null = null;
   matriculaEliminar: number | null = null;
   mostrarTabla: boolean = false;  
@@ -50,58 +50,57 @@ export default class EmpleadosComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const { matricula, nombre, email, edad, horas } = this.formulario.value;
-
-   
-    const matriculaExiste = this.empleados.some(empleado => empleado.matricula === matricula);
-    const correoExiste = this.empleados.some(empleado => empleado.email === email);
-
-    if (matriculaExiste && this.matriculaModificar === null) {
-        this.errorMessage = 'La matrícula ya existe.';
-        this.successMessage = '';  
+    if (this.formulario.invalid) {
+        this.errorMessage = 'Por favor completa todos los campos.';
         return;
     }
 
-    if (correoExiste && this.matriculaModificar === null) {
-      this.errorMessage = 'El correo ya existe.';
-      this.successMessage = '';  
-      return;
+    const { matricula, nombre, email, edad, horas } = this.formulario.value;
+    if (!matricula || !nombre || !email || !edad || !horas) {
+        this.errorMessage = 'Por favor completa todos los campos.';
+        return;
     }
 
-     const pagoNormal = this.calcularPagoNormal(horas);
-     const pagoExtra = this.calcularPagoExtra(horas);
-     const subtotal = pagoNormal + pagoExtra;
+    const matriculaExiste = this.empleados.some(empleado => empleado.matricula === matricula);
 
-     const empleado: Empleado = {
-      matricula,
-      nombre,
-      email,
-      edad,
-      horas,
-      pago: pagoNormal,
-      extra: pagoExtra,
-      subtotal
-     };
+    if (matriculaExiste && this.matriculaModificar === null) {
+        this.errorMessage = 'La matrícula ya existe.';
+        this.successMessage = '';
+        return;
+    }
+    const pagoNormal = this.calcularPagoNormal(horas);
+    const pagoExtra = this.calcularPagoExtra(horas);
+    const subtotal = pagoNormal + pagoExtra;
+    const empleado: Empleado = {
+        matricula,
+        nombre,
+        email,
+        edad,
+        horas,
+        pago: pagoNormal,
+        extra: pagoExtra,
+        subtotal
+    };
 
-     if (this.matriculaModificar !== null) {
-      const empleadoIndex = this.empleados.findIndex(e => e.matricula === this.matriculaModificar);
-      if (empleadoIndex !== -1) {
-          this.empleados[empleadoIndex] = empleado;
-      }
-      this.matriculaModificar = null;
-      this.successMessage = 'Empleado modificado con exito.';
-      this.errorMessage = '';  
-     } else {
-      this.empleados.push(empleado);
-      this.successMessage = 'Empleado agregado con exito.';
-      this.errorMessage = ''; 
-     }
+    if (this.matriculaModificar !== null) {
+        const empleadoIndex = this.empleados.findIndex(e => e.matricula === this.matriculaModificar);
+        if (empleadoIndex !== -1) {
+            this.empleados[empleadoIndex] = empleado;
+        }
+        this.matriculaModificar = null;
+        this.successMessage = 'Empleado modificado correctamente.';
+        this.errorMessage = ''; 
+    } else {
+        this.empleados.push(empleado);
+        this.successMessage = 'Empleado agregado correctamente.';
+        this.errorMessage = ''; 
+    }
 
-     localStorage.setItem('empleados', JSON.stringify(this.empleados));
-     this.calcularTotalPagos();
-     this.formulario.reset();
+    localStorage.setItem('empleados', JSON.stringify(this.empleados));
+    this.calcularTotalPagos();
+    this.formulario.reset();
+    this.mostrarTabla =false;
   }
-
   imprimirTabla(): void {
     this.mostrarTabla = true; 
   }
@@ -118,7 +117,7 @@ export default class EmpleadosComponent implements OnInit {
   }
 
   calcularPagoExtra(horas: number): number {
-    return Math.max(horas - 40, 0) * 140;
+    return Math.max(0, horas - 40) * 140; 
   }
 
   calcularTotalPagos(): void {
@@ -129,13 +128,15 @@ export default class EmpleadosComponent implements OnInit {
     if (this.matriculaModificar !== null) {
       const empleado = this.empleados.find(e => e.matricula === this.matriculaModificar);
       if (empleado) {
-        this.formulario.patchValue(empleado);  
+        this.formulario.patchValue(empleado); 
         this.successMessage = '';  
       } else {
-        this.errorMessage = 'no encontrado.';
-        this.successMessage = '';  
+        this.errorMessage = 'Empleado no encontrado.';
+        this.successMessage = ''; 
       }
     }
+    this.mostrarTabla =false;
+
   }
 
   eliminarEmpleadoPorMatricula(): void {
@@ -144,8 +145,9 @@ export default class EmpleadosComponent implements OnInit {
       localStorage.setItem('empleados', JSON.stringify(this.empleados));
       this.calcularTotalPagos();
       this.matriculaEliminar = null;
-      this.successMessage = 'Empleado eliminado.';
-      this.errorMessage = '';  
+      this.successMessage = 'Empleado eliminado correctamente.';
+      this.errorMessage = ''; 
+      this.mostrarTabla =false;
     }
   }
 }
